@@ -26,6 +26,16 @@ export interface CreationTrendDatum {
   repos: number;
 }
 
+export interface RecentUpdateDatum {
+  id: number;
+  name: string;
+  url: string;
+  language: string | null;
+  updatedAt: string;
+  pushedAt: string;
+  stars: number;
+}
+
 export interface DeveloperStat {
   label: string;
   value: string;
@@ -145,6 +155,29 @@ export function buildCreationTrends(
     .sort((left, right) => Number(left[0]) - Number(right[0]))
     .slice(-6)
     .map(([label, repos]) => ({ label, repos }));
+}
+
+export function buildRecentlyUpdatedRepositories(
+  repositories: GitHubRepositorySummary[],
+): RecentUpdateDatum[] {
+  return repositories
+    .slice()
+    .sort((left, right) => {
+      const leftTime = safeDate(left.pushedAt || left.updatedAt)?.getTime() ?? 0;
+      const rightTime = safeDate(right.pushedAt || right.updatedAt)?.getTime() ?? 0;
+
+      return rightTime - leftTime;
+    })
+    .slice(0, 6)
+    .map((repository) => ({
+      id: repository.id,
+      name: repository.name,
+      url: repository.url,
+      language: repository.language,
+      updatedAt: repository.updatedAt,
+      pushedAt: repository.pushedAt,
+      stars: repository.stars,
+    }));
 }
 
 export function buildDeveloperStats(
