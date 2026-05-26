@@ -1,5 +1,5 @@
-import { createServer } from './app.js';
-import { env } from './config/env.js';
+import { createServer } from "./app.js";
+import { env } from "./config/env.js";
 
 const app = createServer();
 

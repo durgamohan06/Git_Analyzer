@@ -1,8 +1,8 @@
-import cors from 'cors';
-import express from 'express';
-import { env } from './config/env.js';
-import { apiRouter } from './routes/index.js';
-import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
+import cors from "cors";
+import express from "express";
+import { env } from "./config/env.js";
+import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
+import { apiRouter } from "./routes/index.js";
 
 export function createServer() {
   const app = express();
@@ -10,19 +10,28 @@ export function createServer() {
   app.use(
     cors({
       origin: env.CORS_ORIGIN,
-      credentials: true
-    })
+      credentials: true,
+    }),
   );
   app.use(express.json());
 
-  app.get('/health', (_request, response) => {
+  app.get("/", (_request, response) => {
     response.json({
-      status: 'ok',
-      timestamp: new Date().toISOString()
+      status: "ok",
+      service: "backend",
+      message: "GitHub Developer Search API",
+      endpoints: ["/health", "/api/health", "/api/github/:username"],
     });
   });
 
-  app.use('/api', apiRouter);
+  app.get("/health", (_request, response) => {
+    response.json({
+      status: "ok",
+      timestamp: new Date().toISOString(),
+    });
+  });
+
+  app.use("/api", apiRouter);
   app.use(notFoundHandler);
   app.use(errorHandler);
 

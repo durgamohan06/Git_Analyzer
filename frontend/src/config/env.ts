@@ -1,9 +1,7 @@
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-
-if (!apiBaseUrl) {
-  throw new Error('Missing VITE_API_BASE_URL');
-}
+const apiBaseUrl =
+  import.meta.env.VITE_API_BASE_URL?.trim().replace(/\/+$/, "") ||
+  "http://localhost:3001";
 
 export const frontendEnv = {
-  apiBaseUrl
+  apiBaseUrl,
 } as const;
