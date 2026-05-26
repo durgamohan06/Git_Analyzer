@@ -35,7 +35,7 @@ export function RepositoryList({ repositories }: RepositoryListProps) {
           {repositories.slice(0, 6).map((repository) => (
             <a
               key={repository.id}
-              className="group rounded-3xl border border-slate-800 bg-slate-950/60 p-5 transition hover:-translate-y-1 hover:border-cyan-400/30 hover:bg-slate-950/80"
+              className="group rounded-3xl border border-slate-800 bg-slate-950/60 p-6 transition-smooth card-hover hover:border-cyan-400/30 hover:bg-slate-950/80 focus:outline-none focus:ring-2 focus:ring-cyan-400/15"
               href={repository.url}
               rel="noreferrer"
               target="_blank"

@@ -1,6 +1,9 @@
 function SkeletonBlock({ className }: { className: string }) {
   return (
-    <div className={`animate-pulse rounded-2xl bg-slate-800/80 ${className}`} />
+    <div
+      className={`rounded-2xl bg-slate-800/80 skeleton-shimmer ${className}`}
+      aria-hidden
+    />
   );
 }
 

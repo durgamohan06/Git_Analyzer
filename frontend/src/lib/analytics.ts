@@ -163,8 +163,10 @@ export function buildRecentlyUpdatedRepositories(
   return repositories
     .slice()
     .sort((left, right) => {
-      const leftTime = safeDate(left.pushedAt || left.updatedAt)?.getTime() ?? 0;
-      const rightTime = safeDate(right.pushedAt || right.updatedAt)?.getTime() ?? 0;
+      const leftTime =
+        safeDate(left.pushedAt || left.updatedAt)?.getTime() ?? 0;
+      const rightTime =
+        safeDate(right.pushedAt || right.updatedAt)?.getTime() ?? 0;
 
       return rightTime - leftTime;
     })

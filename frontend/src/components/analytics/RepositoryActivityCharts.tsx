@@ -81,7 +81,7 @@ export function RepositoryActivityCharts({
                     fillOpacity={1}
                     fill="url(#activityGradient)"
                     isAnimationActive
-                    animationDuration={900}
+                    animationDuration={700}
                   />
                 </AreaChart>
               </ResponsiveContainer>
@@ -134,7 +134,7 @@ export function RepositoryActivityCharts({
                     dot={{ r: 3 }}
                     activeDot={{ r: 5 }}
                     isAnimationActive
-                    animationDuration={900}
+                    animationDuration={700}
                   />
                 </LineChart>
               </ResponsiveContainer>

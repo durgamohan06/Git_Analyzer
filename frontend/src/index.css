@@ -42,3 +42,50 @@ body {
 .animate-fade-in-up {
   animation: fade-in-up 480ms ease-out;
 }
+
+:root {
+  --card-radius: 1.25rem; /* 20px */
+  --card-padding: 1.25rem; /* 20px */
+  --transition-fast: 180ms;
+  --transition-medium: 260ms;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.transition-smooth {
+  transition:
+    transform var(--transition-fast) cubic-bezier(0.22, 0.9, 0.26, 1),
+    box-shadow var(--transition-fast) cubic-bezier(0.22, 0.9, 0.26, 1),
+    border-color var(--transition-fast) ease-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(148, 163, 184, 0.04) 0%,
+    rgba(148, 163, 184, 0.08) 50%,
+    rgba(148, 163, 184, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .skeleton-shimmer,
+  .transition-smooth {
+    animation: none !important;
+    transition: none !important;
+  }
+}

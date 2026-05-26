@@ -26,7 +26,9 @@ export function AnalyticsDashboard({ dashboard }: AnalyticsDashboardProps) {
   const popularityData = buildPopularityChartData(dashboard.repositories);
   const timelineData = buildActivityTimeline(dashboard.repositories);
   const creationTrendData = buildCreationTrends(dashboard.repositories);
-  const recentUpdates = buildRecentlyUpdatedRepositories(dashboard.repositories);
+  const recentUpdates = buildRecentlyUpdatedRepositories(
+    dashboard.repositories,
+  );
   const statsData = buildDeveloperStats(dashboard);
   const insights = buildDeveloperInsights(dashboard);
 

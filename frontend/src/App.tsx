@@ -1,11 +1,15 @@
 import { useState } from "react";
 import { AnalyticsDashboard } from "@/components/analytics/AnalyticsDashboard";
+import { CompareDashboard } from "@/components/compare/CompareDashboard";
 import { DashboardError } from "@/components/dashboard/DashboardError";
 import { DashboardSkeleton } from "@/components/dashboard/DashboardSkeleton";
 import { SearchBar } from "@/components/search/SearchBar";
+import { CompareBar } from "@/components/search/CompareBar";
 import { searchGitHubUser } from "@/services/github";
+import { compareGitHubUsers } from "@/services/github";
 import { ApiError } from "@/services/http";
 import type { GitHubDashboardData } from "@/types/github";
+import type { GitHubCompareResponse } from "@/types/github";
 
 export default function App() {
   const [query, setQuery] = useState("");
@@ -15,6 +19,12 @@ export default function App() {
   const [error, setError] = useState<{ code?: string; message: string } | null>(
     null,
   );
+  const [isCompareMode, setIsCompareMode] = useState(false);
+  const [isCompareLoading, setIsCompareLoading] = useState(false);
+  const [compareData, setCompareData] = useState<GitHubCompareResponse | null>(
+    null,
+  );
+  const [compareError, setCompareError] = useState<string | null>(null);
 
   async function runSearch(username: string) {
     const trimmedUsername = username.trim();
@@ -71,6 +81,28 @@ export default function App() {
     }
   }
 
+  async function runCompare(a: string, b: string) {
+    setIsCompareLoading(true);
+    setCompareError(null);
+    setCompareData(null);
+
+    try {
+      const data = (await compareGitHubUsers(
+        a.trim(),
+        b.trim(),
+      )) as GitHubCompareResponse;
+      setCompareData(data);
+    } catch (caughtError) {
+      if (caughtError instanceof ApiError) {
+        setCompareError(caughtError.message || "Comparison failed");
+      } else {
+        setCompareError("Unable to compare profiles right now.");
+      }
+    } finally {
+      setIsCompareLoading(false);
+    }
+  }
+
   return (
     <main className="min-h-screen overflow-hidden bg-slate-950 text-slate-100">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.16),_transparent_34%),radial-gradient(circle_at_bottom_right,_rgba(14,165,233,0.16),_transparent_28%)]" />
@@ -101,6 +133,28 @@ export default function App() {
               onSubmit={() => void runSearch(query)}
             />
 
+            <div className="mt-3 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <label className="flex items-center gap-2 text-sm text-slate-400">
+                  <input
+                    type="checkbox"
+                    checked={isCompareMode}
+                    onChange={(e) => setIsCompareMode(e.target.checked)}
+                  />
+                  Compare mode
+                </label>
+              </div>
+            </div>
+
+            {isCompareMode ? (
+              <div className="mt-3">
+                <CompareBar
+                  isLoading={isCompareLoading}
+                  onCompare={runCompare}
+                />
+              </div>
+            ) : null}
+
             <div className="flex flex-wrap gap-2 text-xs text-slate-400">
               <button
                 className="rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 transition hover:border-cyan-400/40 hover:text-cyan-200"
@@ -128,7 +182,7 @@ export default function App() {
         </header>
 
         <section className="flex-1 py-8">
-          {isLoading ? <DashboardSkeleton /> : null}
+          {isLoading || isCompareLoading ? <DashboardSkeleton /> : null}
 
           {!isLoading && error ? (
             <DashboardError
@@ -138,8 +192,20 @@ export default function App() {
             />
           ) : null}
 
-          {!isLoading && !error && dashboard ? (
+          {!isCompareMode && !isLoading && !error && dashboard ? (
             <AnalyticsDashboard dashboard={dashboard} />
+          ) : null}
+
+          {isCompareMode && !isCompareLoading && compareError ? (
+            <DashboardError
+              code={undefined}
+              message={compareError}
+              onRetry={() => void 0}
+            />
+          ) : null}
+
+          {isCompareMode && !isCompareLoading && compareData ? (
+            <CompareDashboard data={compareData} />
           ) : null}
 
           {!isLoading && !error && !dashboard ? (

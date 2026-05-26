@@ -45,7 +45,7 @@ export function LanguageDistributionChart({
                   outerRadius={100}
                   paddingAngle={2}
                   isAnimationActive
-                  animationDuration={900}
+                  animationDuration={700}
                   animationEasing="ease-out"
                 >
                   {data.map((entry, index) => (

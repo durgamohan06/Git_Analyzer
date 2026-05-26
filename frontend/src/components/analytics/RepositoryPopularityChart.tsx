@@ -58,14 +58,14 @@ export function RepositoryPopularityChart({
                 fill="#22d3ee"
                 radius={[6, 6, 0, 0]}
                 isAnimationActive
-                animationDuration={900}
+                animationDuration={700}
               />
               <Bar
                 dataKey="forks"
                 fill="#818cf8"
                 radius={[6, 6, 0, 0]}
                 isAnimationActive
-                animationDuration={900}
+                animationDuration={700}
               />
             </BarChart>
           </ResponsiveContainer>

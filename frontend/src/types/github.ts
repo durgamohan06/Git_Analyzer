@@ -66,6 +66,22 @@ export interface GitHubDashboardData {
   repoSummary: GitHubRepositorySummaryStats;
 }
 
+export interface GitHubCompareSide {
+  success: true;
+  data: GitHubDashboardData;
+}
+
+export interface GitHubCompareErrorSide {
+  success: false;
+  error: { status?: number; code?: string; message?: string };
+}
+
+export interface GitHubCompareResponse {
+  left: GitHubCompareSide | GitHubCompareErrorSide;
+  right: GitHubCompareSide | GitHubCompareErrorSide;
+  comparison: { bothAvailable: boolean };
+}
+
 export interface HealthResponse {
   status: string;
   timestamp: string;

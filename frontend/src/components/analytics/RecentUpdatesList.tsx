@@ -30,7 +30,10 @@ function formatRelativeDays(value: string) {
 
 export function RecentUpdatesList({ repositories }: RecentUpdatesListProps) {
   return (
-    <AnalyticsCard title="Recent activity" subtitle="Recently updated repositories">
+    <AnalyticsCard
+      title="Recent activity"
+      subtitle="Recently updated repositories"
+    >
       {repositories.length > 0 ? (
         <div className="space-y-3">
           {repositories.map((repository) => (
@@ -39,7 +42,7 @@ export function RecentUpdatesList({ repositories }: RecentUpdatesListProps) {
               href={repository.url}
               rel="noreferrer"
               target="_blank"
-              className="group flex items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-950/65 px-4 py-3 transition hover:-translate-y-0.5 hover:border-cyan-300/30"
+              className="group flex items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-950/65 px-4 py-3 transition-smooth card-hover hover:border-cyan-300/30 focus:outline-none focus:ring-2 focus:ring-cyan-400/15"
             >
               <div className="min-w-0">
                 <p className="truncate text-sm font-semibold text-white group-hover:text-cyan-200">
@@ -50,7 +53,9 @@ export function RecentUpdatesList({ repositories }: RecentUpdatesListProps) {
                 </p>
               </div>
               <span className="shrink-0 text-xs text-slate-400">
-                {formatRelativeDays(repository.pushedAt || repository.updatedAt)}
+                {formatRelativeDays(
+                  repository.pushedAt || repository.updatedAt,
+                )}
               </span>
             </a>
           ))}
